@@ -1,15 +1,13 @@
-"""Terminal UI module for Polvon using Textual."""
-
 from textual.app import App, ComposeResult
-from textual.containers import Container, Horizontal, Vertical, ScrollableContainer
+from textual.containers import Container, Horizontal, ScrollableContainer
 from textual.widgets import Header, Footer, DataTable, Static, Button, Label, Input
 from textual.binding import Binding
-from textual.screen import Screen, ModalScreen
+from textual.screen import ModalScreen
 from textual import on
 from textual.reactive import reactive
 from rich.text import Text
 
-from .service import ServiceManager, Service, ServiceState
+from .service import ServiceManager, ServiceState
 
 
 class ConfirmDialog(ModalScreen):

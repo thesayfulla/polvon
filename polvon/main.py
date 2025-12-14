@@ -1,5 +1,3 @@
-"""Main entry point for Polvon CLI."""
-
 import argparse
 import sys
 import os
@@ -8,7 +6,6 @@ from .tui import PolvonApp
 
 
 def check_systemd():
-    """Check if systemd is available on the system."""
     if not os.path.exists("/usr/bin/systemctl") and not os.path.exists("/bin/systemctl"):
         print("Error: systemctl not found. This tool requires systemd.", file=sys.stderr)
         return False
@@ -57,12 +54,10 @@ Keyboard shortcuts:
     if not check_systemd():
         sys.exit(1)
     
-    # Check if we need sudo and warn the user
     if not args.sudo and os.geteuid() != 0:
         print("Note: Running without sudo. You may need --sudo flag for service management.")
         print("      Some operations may fail without proper permissions.\n")
     
-    # Start the TUI application
     try:
         app = PolvonApp(use_sudo=args.sudo)
         app.run()

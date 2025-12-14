@@ -1,14 +1,10 @@
-"""Service management module for interacting with systemd."""
-
 import subprocess
-import re
 from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass
 from enum import Enum
 
 
 class ServiceState(Enum):
-    """Enum for service states."""
     ACTIVE = "active"
     INACTIVE = "inactive"
     FAILED = "failed"
@@ -18,7 +14,6 @@ class ServiceState(Enum):
 
 
 class ServiceLoadState(Enum):
-    """Enum for service load states."""
     LOADED = "loaded"
     NOT_FOUND = "not-found"
     ERROR = "error"
@@ -28,7 +23,6 @@ class ServiceLoadState(Enum):
 
 @dataclass
 class Service:
-    """Data class representing a systemd service."""
     name: str
     load_state: ServiceLoadState
     active_state: ServiceState
@@ -38,7 +32,6 @@ class Service:
 
 
 class ServiceManager:
-    """Manager class for systemd service operations."""
 
     def __init__(self, use_sudo: bool = False):
         """Initialize the service manager.
