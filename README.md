@@ -7,9 +7,6 @@ A terminal UI tool for managing Linux systemd services.
 - Modern terminal interface with color-coded status indicators
 - Keyboard-driven navigation and controls
 - Search and filter services by name or description
-- Confirmation dialogs for critical actions
-- Real-time service status monitoring
-- Service log viewing
 - Start, stop, restart, enable, and disable services
 - Toggle between active and all services
 
