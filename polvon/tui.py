@@ -267,7 +267,8 @@ class PolvonApp(App):
             query = self.search_query.lower()
             self.filtered_services = [
                 service for service in self.services
-                if query in service.name.lower() or query in service.description.lower()
+                if query in service.name.lower() or 
+                   (service.description and query in service.description.lower())
             ]
 
     def update_table(self) -> None:

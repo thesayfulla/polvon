@@ -112,6 +112,24 @@ class TestTUISearch(unittest.TestCase):
         self.assertEqual(len(self.app.filtered_services), 1)
         self.assertEqual(self.app.filtered_services[0].name, "apache2.service")
 
+    def test_filter_services_with_none_description(self):
+        """Test filtering services when description is None."""
+        service_with_none = Service(
+            name="test.service",
+            load_state=ServiceLoadState.LOADED,
+            active_state=ServiceState.ACTIVE,
+            sub_state="running",
+            description=None,
+            enabled=True
+        )
+        self.app.services = [service_with_none]
+        self.app.search_query = "test"
+        self.app.filter_services()
+        
+        # Should match by name even though description is None
+        self.assertEqual(len(self.app.filtered_services), 1)
+        self.assertEqual(self.app.filtered_services[0].name, "test.service")
+
 
 if __name__ == '__main__':
     unittest.main()
