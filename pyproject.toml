@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "polvon"
-version = "0.1"
+version = "0.1.1"
 description = "CLI tool for managing Linux systemd services, apps, and automations"
 readme = "README.md"
 requires-python = ">=3.8"
