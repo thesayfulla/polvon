@@ -38,7 +38,7 @@ jobs:
         run: python -m build
       
       - name: Check package
-        run: twine check --strict dist/* || true
+        run: twine check dist/*
       
       - name: Publish to TestPyPI
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'testpypi'
