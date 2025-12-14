@@ -2,7 +2,7 @@
 
 from textual.app import App, ComposeResult
 from textual.containers import Container, Horizontal, Vertical, ScrollableContainer
-from textual.widgets import Header, Footer, DataTable, Static, Button, Label
+from textual.widgets import Header, Footer, DataTable, Static, Button, Label, Input
 from textual.binding import Binding
 from textual.screen import Screen, ModalScreen
 from textual import on
@@ -174,6 +174,16 @@ class PolvonApp(App):
         padding: 1 2;
     }
 
+    #search_container {
+        dock: top;
+        height: 3;
+        padding: 0 2;
+    }
+
+    #search_input {
+        width: 100%;
+    }
+
     #service_table {
         height: 1fr;
     }
@@ -206,20 +216,28 @@ class PolvonApp(App):
         Binding("v", "status", "Status", show=True),
         Binding("l", "logs", "Logs", show=True),
         Binding("a", "toggle_all", "Toggle All", show=True),
+        Binding("/", "focus_search", "Search", show=True),
+        Binding("escape", "clear_search", "Clear Search", show=False),
     ]
 
     TITLE = "Polvon - System Service Manager"
 
     show_all_services = reactive(False)
+    search_query = reactive("")
 
     def __init__(self, use_sudo: bool = False):
         super().__init__()
         self.service_manager = ServiceManager(use_sudo=use_sudo)
         self.services = []
+        self.filtered_services = []
 
     def compose(self) -> ComposeResult:
         yield Header()
         yield Static("Loading services...", id="info_bar")
+        yield Container(
+            Input(placeholder="Search services... (Press / to focus, Esc to clear)", id="search_input"),
+            id="search_container"
+        )
         yield DataTable(id="service_table")
         yield Footer()
 
@@ -237,15 +255,28 @@ class PolvonApp(App):
     def load_services(self) -> None:
         """Load services from systemd."""
         self.services = self.service_manager.list_services(show_all=self.show_all_services)
+        self.filter_services()
         self.update_table()
         self.update_info_bar()
+
+    def filter_services(self) -> None:
+        """Filter services based on search query."""
+        if not self.search_query:
+            self.filtered_services = self.services
+        else:
+            query = self.search_query.lower()
+            self.filtered_services = [
+                service for service in self.services
+                if query in service.name.lower() or 
+                   (service.description and query in service.description.lower())
+            ]
 
     def update_table(self) -> None:
         """Update the service table with current data."""
         table = self.query_one("#service_table", DataTable)
         table.clear()
         
-        for service in self.services:
+        for service in self.filtered_services:
             # Create colored state text
             state_text = Text(service.active_state.value)
             if service.active_state == ServiceState.ACTIVE:
@@ -275,13 +306,14 @@ class PolvonApp(App):
         failed = sum(1 for s in self.services if s.active_state == ServiceState.FAILED)
         
         mode = "all services" if self.show_all_services else "active services"
-        info.update(f"Total: {total} | Active: {active} | Failed: {failed} | Showing: {mode}")
+        search_info = f" | Filtered: {len(self.filtered_services)}" if self.search_query else ""
+        info.update(f"Total: {total} | Active: {active} | Failed: {failed} | Showing: {mode}{search_info}")
 
     def get_selected_service(self) -> str:
         """Get the currently selected service name."""
         table = self.query_one("#service_table", DataTable)
-        if 0 <= table.cursor_row < len(self.services):
-            return self.services[table.cursor_row].name
+        if 0 <= table.cursor_row < len(self.filtered_services):
+            return self.filtered_services[table.cursor_row].name
         return None
 
     def action_refresh(self) -> None:
@@ -414,3 +446,23 @@ class PolvonApp(App):
             self.push_screen(LogScreen(logs))
         else:
             self.notify("Failed to get service logs", severity="error")
+
+    def action_focus_search(self) -> None:
+        """Focus the search input."""
+        search_input = self.query_one("#search_input", Input)
+        search_input.focus()
+
+    def action_clear_search(self) -> None:
+        """Clear the search input."""
+        search_input = self.query_one("#search_input", Input)
+        search_input.value = ""
+        table = self.query_one("#service_table", DataTable)
+        table.focus()
+
+    @on(Input.Changed, "#search_input")
+    def on_search_input_changed(self, event: Input.Changed) -> None:
+        """Handle search input changes."""
+        self.search_query = event.value
+        self.filter_services()
+        self.update_table()
+        self.update_info_bar()

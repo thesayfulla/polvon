@@ -6,6 +6,7 @@
 
 - 🎨 **Modern Terminal UI** - Beautiful, color-coded interface using Textual
 - ⌨️ **Keyboard-driven** - Navigate and control services efficiently
+- 🔍 **Search & Filter** - Quickly find services by name or description
 - 🔒 **Safe Operations** - Confirmation dialogs for critical actions
 - 📊 **Real-time Status** - View service states with color indicators
 - 📝 **Log Viewing** - Access service logs directly from the interface
@@ -56,6 +57,8 @@ polvon --version
 | `q` | Quit the application |
 | `r` | Refresh service list |
 | `a` | Toggle between all services and active services |
+| `/` | Focus search input to filter services |
+| `Esc` | Clear search and return to service list |
 | `s` | Start selected service |
 | `Shift+S` | Stop selected service |
 | `Shift+R` | Restart selected service |
