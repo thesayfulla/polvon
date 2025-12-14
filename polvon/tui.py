@@ -280,7 +280,7 @@ class PolvonApp(App):
     def get_selected_service(self) -> str:
         """Get the currently selected service name."""
         table = self.query_one("#service_table", DataTable)
-        if table.cursor_row >= 0 and table.cursor_row < len(self.services):
+        if 0 <= table.cursor_row < len(self.services):
             return self.services[table.cursor_row].name
         return None
 
