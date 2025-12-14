@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "CLI tool for managing Linux systemd services, apps, and automations"
 readme = "README.md"
 requires-python = ">=3.8"
-license = {text = "MIT"}
+license = "MIT"
 authors = [
     {name = "Sayfulla Mirkhalikov"}
 ]
@@ -16,7 +16,6 @@ keywords = ["systemd", "cli", "tui", "service-manager"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: System Administrators",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",

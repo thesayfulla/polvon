@@ -15,18 +15,18 @@
 
 ## Installation
 
+### Using pip (Recommended)
+
+```bash
+pip install polvon
+```
+
 ### From Source
 
 ```bash
 git clone https://github.com/thesayfulla/polvon.git
 cd polvon
 pip install -e .
-```
-
-### Using pip (when published)
-
-```bash
-pip install polvon
 ```
 
 ## Requirements
@@ -125,6 +125,10 @@ polvon/
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Publishing
+
+For maintainers: See [PUBLISHING.md](PUBLISHING.md) for instructions on publishing new versions to PyPI.
 
 ## License
 
