@@ -26,6 +26,8 @@ Keyboard shortcuts:
   q          - Quit
   r          - Refresh service list
   a          - Toggle between all services and active services
+  /          - Focus search input to filter services
+  Esc        - Clear search and return to service list
   s          - Start selected service
   Shift+S    - Stop selected service
   Shift+R    - Restart selected service
